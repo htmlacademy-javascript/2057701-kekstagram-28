@@ -1,10 +1,7 @@
-const countLetters = function (string, maxLength) {
-  const stringLength = string.length;
-  return stringLength <= maxLength;
-};
-countLetters();
+const countLetters = (string, maxLength) => string.length <= maxLength;
+countLetters('проверяемая строка', 20);
 
-const isPalindrome = function (originalWord) {
+const isPalindrome = (originalWord) => {
   originalWord = originalWord.toLowerCase();
   originalWord = originalWord.split(' ').join('');
   let reversedWord = '';
@@ -13,9 +10,9 @@ const isPalindrome = function (originalWord) {
   }
   return originalWord === reversedWord;
 };
-isPalindrome();
+isPalindrome('Лёша на полке клопа нашёл ');
 
-const getNumber = function (toNumber) {
+const getNumber = (toNumber) => {
   toNumber = toNumber.replace(/\D/g, '');
   if (toNumber === '') {
     return NaN;
@@ -24,9 +21,9 @@ const getNumber = function (toNumber) {
     return toNumber;
   }
 };
-getNumber();
+getNumber('1 кефир, 0.5 батона');
 
-function addPadding(string, minLength, extraString) {
+const addPadding = (string, minLength, extraString) => {
   if (string.length >= minLength) {
     return string;
   }
@@ -41,5 +38,5 @@ function addPadding(string, minLength, extraString) {
     croppedString += extraString[i];
   }
   return croppedString + string;
-}
-addPadding();
+};
+addPadding('qwerty', 4, '0');
