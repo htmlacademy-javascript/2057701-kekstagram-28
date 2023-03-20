@@ -1,15 +1,10 @@
-const MIN_COUNT_USERS_ID = 1;
-const MAX_COUNT_USERS_ID = 25;
-const MIN_COUNT_COMMENTS_ID = 26;
-const MAX_COUNT_COMMENTS_ID = 1000;
-const MIN_COUNT_PHOTOS_ID = 1;
-const MAX_COUNT_PHOTOS_ID = 25;
-const MIN_COUNT_LIKE = 15;
-const MAX_COUNT_LIKE = 200;
+const NUMBER_OF_GENERATED_PHOTOS = 25;
+const NUMBER_OF_GENERATED_COMMENT_IDS = 250;
+const NUMBER_OF_GENERATED_COMMENTS = 10;
 const MIN_COUNT_AVATAR = 1;
 const MAX_COUNT_AVATAR = 6;
-
-const SIMILAR_USERS_COUNT = 25;
+const MIN_COUNT_LIKE = 15;
+const MAX_COUNT_LIKE = 200;
 
 const NAMES = [ 'Иван',
   'Андрей',
@@ -57,52 +52,42 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-function getRandomInteger (min, max) {
-  const minValue = Math.abs(min);
-  const maxValue = Math.abs(max);
-  const lower = Math.ceil(Math.min(minValue, maxValue));
-  const upper = Math.floor(Math.max(minValue, maxValue));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
+const getRandomInteger = (min, max) => {
+  const result = Math.random() * (max - min + 1) + min;
   return Math.floor(result);
-}
+};
 
-function createRandomIdFromRangeGenerator (min, max) {
-  const previousValues = [];
+const getRandomIdGenerator = (min, max) => {
+  const ids = Array.from({length: max - min + 1}, (_, i) => min + i);
 
   return function () {
-    let currentValue = getRandomInteger(min, max);
-
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-
-    previousValues.push(currentValue);
-
-    return currentValue;
+    const randomIndex = getRandomInteger(0, ids.length - 1);
+    const resultId = ids[randomIndex];
+    ids.splice(randomIndex, 1);
+    return resultId;
   };
-}
+};
 
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const createUniqueCommentId = getRandomIdGenerator(1, NUMBER_OF_GENERATED_COMMENT_IDS);
 
-const getUniqueCommentId = createRandomIdFromRangeGenerator(MIN_COUNT_COMMENTS_ID, MAX_COUNT_COMMENTS_ID);
-const getUniqueUserId = createRandomIdFromRangeGenerator(MIN_COUNT_USERS_ID, MAX_COUNT_USERS_ID);
-const getUniquePhotoId = createRandomIdFromRangeGenerator(MIN_COUNT_PHOTOS_ID, MAX_COUNT_PHOTOS_ID);
-
-const createUserComments = () => ({
-  id: getUniqueCommentId(),
-  avatar: `img/avatar-${ getRandomInteger(MIN_COUNT_AVATAR, MAX_COUNT_AVATAR) }.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES),
+const createComments = () => ({
+  id: createUniqueCommentId(),
+  avatar: `img/avatar-${getRandomInteger(MIN_COUNT_AVATAR, MAX_COUNT_AVATAR)}.svg`,
+  message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
+  name: NAMES[getRandomInteger(0, NAMES.length - 1)]
 });
 
-const createUser = () => ({
-  id: getUniqueUserId(),
-  url: `photos/${ getUniquePhotoId() }.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
+const createPhotoDescription = (index) => ({
+  id: index,
+  url: `photos/${index}.jpg`,
+  description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
   likes: getRandomInteger(MIN_COUNT_LIKE, MAX_COUNT_LIKE),
-  name: getRandomArrayElement(NAMES),
-  comment: createUserComments(),
+  comments: Array.from({length: getRandomInteger(1, NUMBER_OF_GENERATED_COMMENTS)}, createComments)
 });
 
-Array.from({length: SIMILAR_USERS_COUNT}, createUser);
+const getPictures = () =>
+  Array.from({length: NUMBER_OF_GENERATED_PHOTOS}, (_, pictureIndex) =>
+    createPhotoDescription(pictureIndex + 1)
+  );
+
+getPictures();
