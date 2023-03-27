@@ -1,5 +1,4 @@
 const countLetters = (string, maxLength) => string.length <= maxLength;
-countLetters('проверяемая строка', 20);
 
 const isPalindrome = (originalWord) => {
   originalWord = originalWord.toLowerCase();
@@ -10,7 +9,6 @@ const isPalindrome = (originalWord) => {
   }
   return originalWord === reversedWord;
 };
-isPalindrome('Лёша на полке клопа нашёл ');
 
 const getNumber = (toNumber) => {
   toNumber = toNumber.replace(/\D/g, '');
@@ -21,7 +19,6 @@ const getNumber = (toNumber) => {
     return toNumber;
   }
 };
-getNumber('1 кефир, 0.5 батона');
 
 const addPadding = (string, minLength, extraString) => {
   if (string.length >= minLength) {
@@ -39,4 +36,21 @@ const addPadding = (string, minLength, extraString) => {
   }
   return croppedString + string;
 };
-addPadding('qwerty', 4, '0');
+
+const getRandomInteger = (min, max) => {
+  const result = Math.random() * (max - min + 1) + min;
+  return Math.floor(result);
+};
+
+const getRandomIdGenerator = (min, max) => {
+  const ids = Array.from({length: max - min + 1}, (_, i) => min + i);
+
+  return function () {
+    const randomIndex = getRandomInteger(0, ids.length - 1);
+    const resultId = ids[randomIndex];
+    ids.splice(randomIndex, 1);
+    return resultId;
+  };
+};
+
+export {addPadding, getNumber, countLetters, isPalindrome, getRandomInteger, getRandomIdGenerator};
