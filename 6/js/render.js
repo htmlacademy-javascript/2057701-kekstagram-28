@@ -1,7 +1,7 @@
 import {getPictures} from './data.js';
 import {renderBigPicture} from './full-picture-render.js';
 
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');;
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
 const photosWithDescriptions = getPictures();
 const picturesContainerFragment = document.createDocumentFragment();
