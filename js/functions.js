@@ -53,4 +53,6 @@ const getRandomIdGenerator = (min, max) => {
   };
 };
 
-export {addPadding, getNumber, countLetters, isPalindrome, getRandomInteger, getRandomIdGenerator};
+const isEscapeKeydown = (evt) => evt.key === 'Escape';
+
+export {addPadding, getNumber, countLetters, isPalindrome, getRandomInteger, getRandomIdGenerator, isEscapeKeydown};
