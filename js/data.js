@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomIdGenerator} from './functions.js';
+import {getRandomInteger, getRandomIdGenerator} from './utils.js';
 
 const NAMES = [ 'Иван', 'Андрей', 'Лука', 'Полина', 'Стефания', 'Катя', 'Дима', 'Арсений', 'Олеся',
   'Кирилл', 'Таисия', 'Алена', 'Александр', 'Инна', 'Оля', 'Маргарита', 'Настя', 'Даша', 'Платон',
@@ -26,7 +26,7 @@ const MESSAGES = [
 
 const NUMBER_OF_GENERATED_PHOTOS = 25;
 const NUMBER_OF_GENERATED_COMMENT_IDS = 250;
-const NUMBER_OF_GENERATED_COMMENTS = 10;
+const NUMBER_OF_GENERATED_COMMENTS = 15;
 const MIN_COUNT_AVATAR = 1;
 const MAX_COUNT_AVATAR = 6;
 const MIN_COUNT_LIKE = 15;
