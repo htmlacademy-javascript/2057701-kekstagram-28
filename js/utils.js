@@ -55,4 +55,18 @@ const getRandomIdGenerator = (min, max) => {
 
 const isEscapeKeydown = (evt) => evt.key === 'Escape';
 
-export {addPadding, getNumber, countLetters, isPalindrome, getRandomInteger, getRandomIdGenerator, isEscapeKeydown};
+const stopPropagation = (evt) => evt.stopPropagation();
+
+const removeEventListenerRest = (parent, type, action, ...selectors) => {
+  for (const selector of selectors) {
+    parent.querySelector(selector).removeEventListener(type, action);
+  }
+};
+
+const addEventListenerRest = (parent, type, action, ...selectors) => {
+  for (const selector of selectors) {
+    parent.querySelector(selector).addEventListener(type, action);
+  }
+};
+
+export {addPadding, getNumber, countLetters, isPalindrome, getRandomInteger, getRandomIdGenerator, isEscapeKeydown, stopPropagation, removeEventListenerRest, addEventListenerRest};
