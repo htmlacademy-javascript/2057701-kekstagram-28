@@ -1,8 +1,7 @@
 import './validation.js';
-import './filters-slider.js';
-import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagation} from './utils.js';
-
-const ESC_RESISTANT_CLASS = ['input[name="hashtags"]', 'textarea[name="description"]'];
+import {addListenersOnEffects, resetEffects} from './filter-sliders.js';
+import {isEscapeKeydown} from './utils.js';
+import {addOnScaleButton, resetScale} from './scale-button.js';
 
 const uploadButton = document.querySelector('#upload-file');
 const uploadModal = document.querySelector('.img-upload__overlay');
@@ -16,7 +15,8 @@ const createUploadForm = () => {
     uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
     uploadModal.classList.remove('hidden');
     document.body.classList.add('modal-open');
-    addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
+    resetScale();
+    resetEffects();
   };
 
   const hideModal = () => {
@@ -27,9 +27,8 @@ const createUploadForm = () => {
     if (pristineError !== null) {
       pristineError.style.display = 'none';
     }
-    document.body.classList.remove('modal-open');
-    removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
     uploadModal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
   };
 
   const closeModal = () => {
@@ -44,13 +43,20 @@ const createUploadForm = () => {
     }
   }
   //#endregion
-  uploadButton.addEventListener('change', () => {
+  uploadButton.addEventListener('change', (evt) => {
     showModal();
 
+    const selectedFile = evt.target.files[0];
+    const fileUrl = URL.createObjectURL(selectedFile);
+    uploadImgPreview.src = fileUrl;
     uploadModalCloseButton.addEventListener('click', closeModal);
     document.addEventListener('keydown', onDocumentKeydown);
-
   });
+
+  uploadButton.addEventListener('change', () => {
+    addOnScaleButton();
+    addListenersOnEffects();
+  }, {once: true});
 };
 
 export {createUploadForm};
