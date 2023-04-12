@@ -1,7 +1,6 @@
 const effectLevelField = document.querySelector('.effect-level');
 const effectLevelInput = effectLevelField.children[0];
 const effectLevelSlider = effectLevelField.children[1];
-const effectsList = document.querySelector('.effects__list');
 const imgUploadPreview = document.querySelector('.img-upload__preview').children[0];
 
 const deleteHiddenClass = () => {
@@ -85,26 +84,17 @@ const updateEffectSlider = (isOriginalPhoto, minSlider, maxSlider, step, effectC
 };
 
 
-const sliderSettings = [
-  () => {
+Array.from(document.querySelectorAll('.effects__radio')).forEach((checkbox) => {
+  checkbox.addEventListener('change', (evt) => {
+    const targetEffect = evt.target.id.split('-')[1];
+    if (options[targetEffect]) {
+      const { min, max, step, selector } = options[targetEffect];
+      updateEffectSlider(false, min, max, step, selector);
+      return;
+    }
     updateEffectSlider(true);
-  },
-  () => {
-    updateEffectSlider(false, options.chrome.min, options.chrome.max, options.chrome.step, options.chrome.selector);
-  },
-  () => {
-    updateEffectSlider(false, options.sepia.min, options.sepia.max, options.sepia.step, options.sepia.selector);
-  },
-  () => {
-    updateEffectSlider(false, options.marvin.min, options.marvin.max, options.marvin.step, options.marvin.selector);
-  },
-  () => {
-    updateEffectSlider(false, options.phobos.min, options.phobos.max, options.phobos.step, options.phobos.selector);
-  },
-  () => {
-    updateEffectSlider(false, options.heat.min, options.heat.max, options.heat.step, options.heat.selector);
-  }
-];
+  });
+});
 
 const addListenersOnEffects = () => {
   noUiSlider.create(effectLevelSlider, {
@@ -118,9 +108,6 @@ const addListenersOnEffects = () => {
   effectLevelSlider.classList.add('hidden');
   effectLevelField.classList.add('hidden');
   effectLevelSlider.noUiSlider.on('update', onSliderUpdate);
-  for (let i = 0; i < 6; i++) {
-    effectsList.children[i].addEventListener('click', sliderSettings[i]);
-  }
 };
 
 const resetEffects = () => {
